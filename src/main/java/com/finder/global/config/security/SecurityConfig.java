@@ -7,6 +7,7 @@ import com.finder.global.security.jwt.handler.JwtAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -37,6 +38,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
+                .rememberMe(AbstractHttpConfigurer::disable)
+                .logout(AbstractHttpConfigurer::disable)
 
                 .exceptionHandling(configurer -> configurer
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
@@ -44,9 +47,17 @@ public class SecurityConfig {
                 )
 
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/auth/signup", "/auth/login", "/auth/reissue").anonymous()
-                        .requestMatchers("/users/me").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/users/me").authenticated()
+
+                        .requestMatchers(HttpMethod.GET, "/items/lost", "/items/found", "/items/{itemId}").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/items/lost").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/items/{itemId}").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/items/{itemId}").authenticated()
+
+                        .requestMatchers(HttpMethod.POST, "/auth/signup", "/auth/login", "/auth/reissue").anonymous()
+
                         .anyRequest().authenticated()
                 )
 

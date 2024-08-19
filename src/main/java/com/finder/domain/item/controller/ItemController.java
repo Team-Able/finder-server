@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,21 +38,18 @@ public class ItemController {
 
     @Operation(summary = "분실물 등록")
     @PostMapping("/lost")
-    @PreAuthorize("hasRole('USER')")
     public ItemResponse createItem(@RequestBody ItemCreateRequest request) {
         return itemService.createItem(request);
     }
 
     @Operation(summary = "분실물 수정")
     @PatchMapping("/{itemId}")
-    @PreAuthorize("hasRole('USER')")
     public ItemResponse updateItem(@PathVariable Long itemId, @RequestBody ItemCreateRequest request) {
         return itemService.updateItem(itemId, request);
     }
 
     @Operation(summary = "분실물 삭제")
     @DeleteMapping("/{itemId}")
-    @PreAuthorize("hasRole('USER')")
     public void deleteItem(@PathVariable Long itemId) {
         itemService.deleteItem(itemId);
     }
