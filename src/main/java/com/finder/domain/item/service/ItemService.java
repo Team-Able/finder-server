@@ -7,9 +7,14 @@ import java.util.List;
 
 public interface ItemService {
     List<ItemResponse> getLostItems();
+
     List<ItemResponse> getFoundItems();
+
     ItemResponse getItem(Long itemId);
+
     ItemResponse createItem(ItemCreateRequest request);
+
     ItemResponse updateItem(Long itemId, ItemCreateRequest request);
+
     void deleteItem(Long itemId);
 }

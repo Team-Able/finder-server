@@ -1,7 +1,6 @@
 package com.finder.global.security.jwt.provider;
 
 import com.finder.domain.user.domain.entity.UserEntity;
-import com.finder.domain.user.repository.UserRepository;
 import com.finder.global.security.jwt.config.JwtProperties;
 import com.finder.global.security.jwt.dto.Jwt;
 import com.finder.global.security.jwt.enums.JwtType;

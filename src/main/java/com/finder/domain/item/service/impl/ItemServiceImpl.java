@@ -34,9 +34,9 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemResponse createItem(ItemCreateRequest request) {
         ItemEntity item = itemRepository.save(ItemEntity.builder()
-                        .title(request.title())
-                        .content(request.content())
-                        .status(ItemStatus.LOST)
+                .title(request.title())
+                .content(request.content())
+                .status(ItemStatus.LOST)
                 .build());
 
         return ItemResponse.of(item);
