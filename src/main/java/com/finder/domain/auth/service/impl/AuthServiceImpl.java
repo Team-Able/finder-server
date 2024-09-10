@@ -18,8 +18,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -38,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
                 .email(request.email())
                 .password(passwordEncoder.encode(request.password()))
                 .username(request.username())
-                .roles(Collections.singleton(UserRole.USER))
+                .role(UserRole.USER)
                 .build();
 
         userRepository.save(user);

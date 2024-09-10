@@ -7,6 +7,7 @@ import com.finder.domain.auth.service.AuthService;
 import com.finder.global.security.jwt.dto.Jwt;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,21 +22,21 @@ public class AuthController {
     @Operation(summary = "회원가입")
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public void signup(@RequestBody SignUpRequest request) {
+    public void signup(@Valid @RequestBody SignUpRequest request) {
         authService.signup(request);
     }
 
     @Operation(summary = "로그인")
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public Jwt login(@RequestBody LoginRequest request) {
+    public Jwt login(@Valid @RequestBody LoginRequest request) {
         return authService.login(request);
     }
 
     @Operation(summary = "토큰 재발급")
     @PostMapping("/reissue")
     @ResponseStatus(HttpStatus.OK)
-    public Jwt reissue(@RequestBody ReissueRequest request) {
+    public Jwt reissue(@Valid @RequestBody ReissueRequest request) {
         return authService.reissue(request);
     }
 }

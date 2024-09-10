@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -28,9 +27,7 @@ public class UserEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @ElementCollection(targetClass = UserRole.class)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Set<UserRole> roles;
+    @Column(name = "role", nullable = false)
+    private UserRole role;
 }
