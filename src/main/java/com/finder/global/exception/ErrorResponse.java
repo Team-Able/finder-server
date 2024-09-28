@@ -19,11 +19,7 @@ public class ErrorResponse {
         this.message = error.getMessage();
     }
 
-    public static ErrorResponse of(CustomError error) {
-        return new ErrorResponse(error);
-    }
-
-    public ResponseEntity<ErrorResponse> toResponseEntity() {
-        return ResponseEntity.status(status).body(this);
+    public static ResponseEntity<ErrorResponse> of(CustomError error) {
+        return ResponseEntity.status(error.getStatus()).body(new ErrorResponse(error));
     }
 }
