@@ -3,10 +3,12 @@ package com.finder.domain.item.controller;
 import com.finder.domain.item.dto.request.ItemCreateRequest;
 import com.finder.domain.item.dto.response.ItemResponse;
 import com.finder.domain.item.service.ItemService;
+import com.finder.global.common.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,37 +22,39 @@ public class ItemController {
 
     @Operation(summary = "분실물 목록 조회")
     @GetMapping("/lost")
-    public List<ItemResponse> getLostItems() {
-        return itemService.getLostItems();
+    public ResponseEntity<BaseResponse<List<ItemResponse>>> getLostItems() {
+        return BaseResponse.of(itemService.getLostItems(), 200, "분실물 목록 조회 성공");
     }
 
     @Operation(summary = "습득물 목록 조회")
     @GetMapping("/found")
-    public List<ItemResponse> getFoundItems() {
-        return itemService.getFoundItems();
+    public ResponseEntity<BaseResponse<List<ItemResponse>>> getFoundItems() {
+        return BaseResponse.of(itemService.getFoundItems(), 200, "습득물 목록 조회 성공");
     }
 
     @Operation(summary = "분실물 조회")
     @GetMapping("/{itemId}")
-    public ItemResponse getItem(@PathVariable Long itemId) {
-        return itemService.getItem(itemId);
+    public ResponseEntity<BaseResponse<ItemResponse>> getItem(@PathVariable Long itemId) {
+        return BaseResponse.of(itemService.getItem(itemId), 200, "분실물 조회 성공");
     }
 
     @Operation(summary = "분실물 등록")
     @PostMapping("/lost")
-    public ItemResponse createItem(@RequestBody ItemCreateRequest request) {
-        return itemService.createItem(request);
+    public ResponseEntity<BaseResponse<ItemResponse>> createItem(@RequestBody ItemCreateRequest request) {
+        return BaseResponse.of(itemService.createItem(request), 201, "분실물 등록 성공");
     }
 
     @Operation(summary = "분실물 수정")
     @PatchMapping("/{itemId}")
-    public ItemResponse updateItem(@PathVariable Long itemId, @RequestBody ItemCreateRequest request) {
-        return itemService.updateItem(itemId, request);
+    public ResponseEntity<BaseResponse<ItemResponse>> updateItem(@PathVariable Long itemId, @RequestBody ItemCreateRequest request) {
+        return BaseResponse.of(itemService.updateItem(itemId, request), 200, "분실물 수정 성공");
     }
 
     @Operation(summary = "분실물 삭제")
     @DeleteMapping("/{itemId}")
-    public void deleteItem(@PathVariable Long itemId) {
+    public ResponseEntity<BaseResponse<Void>> deleteItem(@PathVariable Long itemId) {
         itemService.deleteItem(itemId);
+
+        return BaseResponse.of(null, 200, "분실물 삭제 성공");
     }
 }
