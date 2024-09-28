@@ -80,11 +80,11 @@ public class JwtProvider {
     public String extractToken(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
 
-        if (token == null || !token.startsWith("Bearer ") || getType(token) != JwtType.ACCESS) {
-            return null;
+        if (token != null && token.startsWith("Bearer ")) {
+            return token.substring(7);
         }
 
-        return token.substring("Bearer ".length());
+        return null;
     }
 
     private String generateAccessToken(UserEntity user) {
