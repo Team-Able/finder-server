@@ -33,6 +33,8 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemResponse createItem(ItemCreateRequest request) {
+        System.out.println(request.title());
+
         ItemEntity item = itemRepository.save(ItemEntity.builder()
                 .title(request.title())
                 .content(request.content())
