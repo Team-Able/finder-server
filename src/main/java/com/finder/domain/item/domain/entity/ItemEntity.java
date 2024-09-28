@@ -3,15 +3,17 @@ package com.finder.domain.item.domain.entity;
 import com.finder.domain.item.domain.enums.ItemStatus;
 import com.finder.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @Table(name = "items")
-@SuperBuilder
-@RequiredArgsConstructor
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ItemEntity extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
