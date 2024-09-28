@@ -5,8 +5,8 @@ import com.finder.domain.item.dto.response.ItemResponse;
 import com.finder.domain.item.service.ItemService;
 import com.finder.global.common.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,13 +40,13 @@ public class ItemController {
 
     @Operation(summary = "분실물 등록")
     @PostMapping("/lost")
-    public ResponseEntity<BaseResponse<ItemResponse>> createItem(@RequestBody ItemCreateRequest request) {
+    public ResponseEntity<BaseResponse<ItemResponse>> createItem(@Valid @RequestBody ItemCreateRequest request) {
         return BaseResponse.of(itemService.createItem(request), 201, "분실물 등록 성공");
     }
 
     @Operation(summary = "분실물 수정")
     @PatchMapping("/{itemId}")
-    public ResponseEntity<BaseResponse<ItemResponse>> updateItem(@PathVariable Long itemId, @RequestBody ItemCreateRequest request) {
+    public ResponseEntity<BaseResponse<ItemResponse>> updateItem(@PathVariable Long itemId, @Valid @RequestBody ItemCreateRequest request) {
         return BaseResponse.of(itemService.updateItem(itemId, request), 200, "분실물 수정 성공");
     }
 
