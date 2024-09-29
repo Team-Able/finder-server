@@ -7,6 +7,11 @@ public record ItemCreateRequest(
         String title,
 
         @NotBlank
-        String content
+        String content,
+
+        @NotBlank
+        String imageUrl,
+
+        ItemLocationCreateRequest location
 ) {
 }

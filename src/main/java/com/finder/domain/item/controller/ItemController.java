@@ -32,6 +32,30 @@ public class ItemController {
         return BaseResponse.of(itemService.getFoundItems(), 200, "습득물 목록 조회 성공");
     }
 
+    @Operation(summary = "습득")
+    @PatchMapping("/{itemId}/found")
+    public ResponseEntity<BaseResponse<ItemResponse>> foundItem(@PathVariable Long itemId) {
+        return BaseResponse.of(itemService.foundItem(itemId), 200, "습득 성공");
+    }
+
+    @Operation(summary = "분실물 목록 조회 (최신순)")
+    @GetMapping("/lost/latest")
+    public ResponseEntity<BaseResponse<List<ItemResponse>>> getLatestFoundItems() {
+        return BaseResponse.of(itemService.getLatestLostItems(), 200, "습득물 목록 조회 성공");
+    }
+
+    @Operation(summary = "분실물 목록 조회 (인기순)")
+    @GetMapping("/lost/popular")
+    public ResponseEntity<BaseResponse<List<ItemResponse>>> getPopularFoundItems() {
+        return BaseResponse.of(itemService.getPopularLostItems(), 200, "습득물 목록 조회 성공");
+    }
+
+    @Operation(summary = "분실물 목록 조회 (가까운 순)")
+    @GetMapping("/lost/region")
+    public ResponseEntity<BaseResponse<List<ItemResponse>>> getRegionFoundItems(@RequestParam Double latitude, @RequestParam Double longitude) {
+        return BaseResponse.of(itemService.getRegionLostItems(latitude, longitude), 200, "습득물 목록 조회 성공");
+    }
+
     @Operation(summary = "분실물 조회")
     @GetMapping("/{itemId}")
     public ResponseEntity<BaseResponse<ItemResponse>> getItem(@PathVariable Long itemId) {

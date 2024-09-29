@@ -8,4 +8,8 @@ import java.util.List;
 
 public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
     List<ItemEntity> findAllByStatus(ItemStatus status);
+
+    List<ItemEntity> findAllByStatusOrderByCreatedAtDesc(ItemStatus status);
+
+    List<ItemEntity> findAllByStatusOrderByViewCountDesc(ItemStatus status);
 }

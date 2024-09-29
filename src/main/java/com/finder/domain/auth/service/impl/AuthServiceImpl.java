@@ -28,6 +28,10 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void signup(SignUpRequest request) {
+        if (userRepository.existsByUsername(request.username())) {
+            throw new CustomException(UserError.USERNAME_ALREADY_EXISTS);
+        }
+
         if (userRepository.existsByEmail(request.email())) {
             throw new CustomException(UserError.USER_ALREADY_EXISTS);
         }

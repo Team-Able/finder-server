@@ -1,4 +1,4 @@
-package com.finder.global.security;
+package com.finder.global.security.details;
 
 import com.finder.domain.user.domain.entity.UserEntity;
 import lombok.Getter;

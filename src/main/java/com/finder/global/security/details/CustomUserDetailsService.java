@@ -1,4 +1,4 @@
-package com.finder.global.security;
+package com.finder.global.security.details;
 
 import com.finder.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

@@ -8,7 +8,15 @@ import java.util.List;
 public interface ItemService {
     List<ItemResponse> getLostItems();
 
+    List<ItemResponse> getLatestLostItems();
+
+    List<ItemResponse> getPopularLostItems();
+
+    List<ItemResponse> getRegionLostItems(Double latitude, Double longitude);
+
     List<ItemResponse> getFoundItems();
+
+    ItemResponse foundItem(Long itemId);
 
     ItemResponse getItem(Long itemId);
 
