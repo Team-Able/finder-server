@@ -52,6 +52,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/users/me").authenticated()
 
                         .requestMatchers(HttpMethod.POST, "/files/upload").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/items/lost/latest", "/items/lost/popular", "/items/lost/region", "/items/found", "/items/{itemId}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/items/lost").authenticated()
