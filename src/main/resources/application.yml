@@ -12,6 +12,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: ${DDL_AUTO}
+  upload:
+    path: ${UPLOAD_PATH}
 
 jwt:
   secret-key: ${JWT_SECRET_KEY}
