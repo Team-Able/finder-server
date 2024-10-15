@@ -38,3 +38,4 @@ out/
 
 compose.yml
 .compose/
+uploads/

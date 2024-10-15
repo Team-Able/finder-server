@@ -44,8 +44,9 @@ public class FileServiceImpl implements FileService {
         String newFilename = filename + "." + extension;
         int i = 1;
 
-        while (Files.exists(Paths.get(uploadProperties.getPath() + newFilename))) {
-            newFilename = filename + "(" + i++ + ")." + extension;
+        while (new File(uploadProperties.getPath(), newFilename).exists()) {
+            newFilename = filename + "(" + i + ")." + extension;
+            i++;
         }
 
         return newFilename;
