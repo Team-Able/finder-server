@@ -1,9 +1,11 @@
 package com.finder.domain.item.service.impl;
 
+import com.finder.domain.comment.controller.CommentController;
 import com.finder.domain.item.domain.entity.ItemEntity;
 import com.finder.domain.item.domain.entity.ItemLocation;
 import com.finder.domain.item.domain.enums.ItemStatus;
 import com.finder.domain.item.dto.request.ItemCreateRequest;
+import com.finder.domain.item.dto.response.ItemDetailResponse;
 import com.finder.domain.item.dto.response.ItemResponse;
 import com.finder.domain.item.repository.ItemRepository;
 import com.finder.domain.item.service.ItemService;
@@ -12,11 +14,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
+    private final CommentController commentController;
 
     @Override
     public List<ItemResponse> getLostItems() {
@@ -57,12 +61,12 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemResponse getItem(Long itemId) {
+    public ItemDetailResponse getItem(Long itemId, UUID userId) {
         ItemEntity item = itemRepository.findById(itemId).orElseThrow();
 
         item.increaseViewCount();
 
-        return ItemResponse.of(itemRepository.save(item));
+        return ItemDetailResponse.of(item, userId);
     }
 
     @Override

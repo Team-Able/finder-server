@@ -7,6 +7,9 @@ public record ItemCreateRequest(
         String title,
 
         @NotBlank
+        Long authorId,
+
+        @NotBlank
         String content,
 
         @NotBlank

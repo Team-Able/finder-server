@@ -1,6 +1,7 @@
 package com.finder.domain.item.controller;
 
 import com.finder.domain.item.dto.request.ItemCreateRequest;
+import com.finder.domain.item.dto.response.ItemDetailResponse;
 import com.finder.domain.item.dto.response.ItemResponse;
 import com.finder.domain.item.service.ItemService;
 import com.finder.global.common.BaseResponse;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Tag(name = "Item", description = "분실물 관련 API")
 @RestController
@@ -58,8 +60,8 @@ public class ItemController {
 
     @Operation(summary = "분실물 조회")
     @GetMapping("/{itemId}")
-    public ResponseEntity<BaseResponse<ItemResponse>> getItem(@PathVariable Long itemId) {
-        return BaseResponse.of(itemService.getItem(itemId), 200, "분실물 조회 성공");
+    public ResponseEntity<BaseResponse<ItemDetailResponse>> getItem(@PathVariable Long itemId, @RequestBody UUID userId) {
+        return BaseResponse.of(itemService.getItem(itemId, userId), 200, "분실물 조회 성공");
     }
 
     @Operation(summary = "분실물 등록")
