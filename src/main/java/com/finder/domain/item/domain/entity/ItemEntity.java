@@ -1,15 +1,11 @@
 package com.finder.domain.item.domain.entity;
 
-import com.finder.domain.comment.domain.entity.CommentEntity;
-import com.finder.domain.comment.dto.response.CommentResponse;
 import com.finder.domain.item.domain.enums.ItemStatus;
 import com.finder.domain.user.domain.entity.UserEntity;
 import com.finder.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.context.annotation.Bean;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -47,8 +43,8 @@ public class ItemEntity extends BaseTimeEntity {
     @Setter
     private ItemStatus status;
 
-    @OneToMany
-    private List<CommentEntity> comments;
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemCommentEntity> comments;
 
     public void increaseViewCount() {
         this.viewCount++;

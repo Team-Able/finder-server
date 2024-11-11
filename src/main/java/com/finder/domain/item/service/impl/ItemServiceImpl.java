@@ -20,7 +20,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
-    private final CommentController commentController;
 
     @Override
     public List<ItemResponse> getLostItems() {
@@ -61,12 +60,12 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDetailResponse getItem(Long itemId, UUID userId) {
+    public ItemDetailResponse getItem(Long itemId) {
         ItemEntity item = itemRepository.findById(itemId).orElseThrow();
 
         item.increaseViewCount();
 
-        return ItemDetailResponse.of(item, userId);
+        return ItemDetailResponse.of(item);
     }
 
     @Override
