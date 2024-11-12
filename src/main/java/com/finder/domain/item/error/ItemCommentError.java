@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 public enum ItemCommentError implements CustomError {
     ITEM_COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Comment not found"),
     ITEM_COMMENT_NOT_DELETABLE(HttpStatus.BAD_REQUEST, "Comment not deletable"),
+    COMMENT_PARRENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Comment parent not found"),
     ;
 
 

@@ -25,7 +25,11 @@ public class ItemCommentServiceImpl implements ItemCommentService {
     @Override
     public ItemCommentResponse createItemComment(Long itemId, ItemCommentCreateRequest request) {
         ItemEntity item = itemRepository.findById(itemId).orElseThrow(() -> new CustomException(ItemError.ITEM_NOT_FOUND));
-        ItemCommentEntity parent = itemCommentRepository.findById(request.parentId()).orElse(null);
+        ItemCommentEntity parent = null;
+        if (request.parentId() != null) {
+             parent = itemCommentRepository.findById(request.parentId()).orElseThrow(
+                    () -> new CustomException(ItemCommentError.COMMENT_PARRENT_NOT_FOUND));
+        }
 
         ItemCommentEntity itemComment = ItemCommentEntity.builder()
                 .author(securityHolder.getPrincipal())
