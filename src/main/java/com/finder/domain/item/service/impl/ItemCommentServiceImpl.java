@@ -38,7 +38,6 @@ public class ItemCommentServiceImpl implements ItemCommentService {
                 .parent(parent)
                 .build();
 
-
         return ItemCommentResponse.of(itemCommentRepository.save(itemComment));
     }
 
