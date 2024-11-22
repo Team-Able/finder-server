@@ -1,6 +1,5 @@
 package com.finder.domain.item.service.impl;
 
-import com.finder.domain.comment.controller.CommentController;
 import com.finder.domain.item.domain.entity.ItemEntity;
 import com.finder.domain.item.domain.entity.ItemLocation;
 import com.finder.domain.item.domain.enums.ItemStatus;
@@ -9,6 +8,7 @@ import com.finder.domain.item.dto.response.ItemDetailResponse;
 import com.finder.domain.item.dto.response.ItemResponse;
 import com.finder.domain.item.repository.ItemRepository;
 import com.finder.domain.item.service.ItemService;
+import com.finder.global.security.holder.SecurityHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +20,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
+    private final SecurityHolder securityHolder;
 
     @Override
     public List<ItemResponse> getLostItems() {
@@ -72,6 +73,7 @@ public class ItemServiceImpl implements ItemService {
     public ItemResponse createItem(ItemCreateRequest request) {
         ItemEntity item = itemRepository.save(ItemEntity.builder()
                 .title(request.title())
+                .author(securityHolder.getPrincipal())
                 .content(request.content())
                 .imageUrl(request.imageUrl())
                 .location(ItemLocation.builder()

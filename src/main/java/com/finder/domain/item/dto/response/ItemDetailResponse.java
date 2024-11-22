@@ -6,6 +6,7 @@ import com.finder.domain.item.domain.enums.ItemStatus;
 import com.finder.domain.user.domain.entity.UserEntity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public record ItemDetailResponse(
@@ -21,6 +22,6 @@ public record ItemDetailResponse(
         LocalDateTime updatedAt
 ) {
     public static ItemDetailResponse of(ItemEntity item) {
-        return new ItemDetailResponse(item.getId(), item.getTitle(), item.getAuthor(), item.getContent(), item.getImageUrl(), item.getStatus(),item.getLocation(), item.getComments().stream().map(ItemCommentResponse::of).toList(), item.getCreatedAt(), item.getUpdatedAt());
+        return new ItemDetailResponse(item.getId(), item.getTitle(), item.getAuthor(), item.getContent(), item.getImageUrl(), item.getStatus(),item.getLocation(), item.getComments().stream().filter(comment -> comment.getParent() == null).map(ItemCommentResponse::of).toList(), item.getCreatedAt(), item.getUpdatedAt());
     }
 }

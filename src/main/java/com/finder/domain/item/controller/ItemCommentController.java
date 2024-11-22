@@ -27,13 +27,13 @@ public class ItemCommentController {
 
     @Operation(summary = "댓글 수정")
     @PatchMapping("/{commentId}")
-    public ResponseEntity<BaseResponse<ItemCommentResponse>> updateComment(@PathVariable Long itemId, @RequestBody Long commentId , @Valid @RequestBody ItemCommentUpdateRequest request) {
+    public ResponseEntity<BaseResponse<ItemCommentResponse>> updateComment(@PathVariable Long itemId, @PathVariable Long commentId , @Valid @RequestBody ItemCommentUpdateRequest request) {
         return BaseResponse.of(itemCommentService.updateItemComment(itemId,commentId,request), 200, "댓글 수정 성공");
     }
 
     @Operation(summary = "댓글 삭제")
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<BaseResponse<Void>> deleteComment(@PathVariable Long itemId, @RequestBody Long commentId) {
+    public ResponseEntity<BaseResponse<Void>> deleteComment(@PathVariable Long itemId, @PathVariable Long commentId) {
         itemCommentService.deleteItemComment(itemId,commentId);
 
         return BaseResponse.of(null, 200, "댓글 삭제 성공");
