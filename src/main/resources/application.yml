@@ -11,7 +11,7 @@ spring:
       password: ${REDIS_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: none # ${DDL_AUTO}
+      ddl-auto: ${DDL_AUTO}
   upload:
     path: ${UPLOAD_PATH}
   servlet:
