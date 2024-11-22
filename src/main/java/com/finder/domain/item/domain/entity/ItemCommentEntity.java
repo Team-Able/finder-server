@@ -9,7 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class ItemCommentEntity extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)
-    private UserEntity author; //댓글 쓴 사람 id
+    private UserEntity author;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id",nullable = false)
@@ -47,12 +46,6 @@ public class ItemCommentEntity extends BaseTimeEntity {
 
     public List<ItemCommentEntity> getChildren() {
         return children != null ? children : Collections.emptyList();
-    }
-
-
-    public void removeChild(ItemCommentEntity child) {
-        child.setParent(null); // 관계를 끊어줍니다.
-        children.remove(child);
     }
 
 }

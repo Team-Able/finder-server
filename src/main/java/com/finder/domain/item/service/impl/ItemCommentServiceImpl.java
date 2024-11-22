@@ -17,8 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -63,7 +61,6 @@ public class ItemCommentServiceImpl implements ItemCommentService {
     @Override
     @Transactional
     public void deleteItemComment(Long itemId, Long commentId) {
-        // 아이템과 댓글을 찾습니다.
         ItemEntity item = itemRepository.findById(itemId).orElseThrow(
                 () -> new CustomException(ItemError.ITEM_NOT_FOUND)
         );
@@ -72,59 +69,26 @@ public class ItemCommentServiceImpl implements ItemCommentService {
                 .findFirst()
                 .orElseThrow(() -> new CustomException(ItemCommentError.ITEM_COMMENT_NOT_FOUND));
 
-        // 작성자가 맞는지 확인
         if (!comment.getAuthor().equals(securityHolder.getPrincipal())) {
             throw new CustomException(ItemCommentError.ITEM_COMMENT_NOT_DELETABLE);
         }
 
-        // 자식 댓글 삭제
         deleteChildComments(comment);
 
-        // 부모 댓글에서 자식 댓글 제거
         if (comment.getParent() != null) {
             comment.getParent().getChildren().remove(comment);
         }
 
-        // 아이템에서 댓글 제거
         item.getComments().remove(comment);
 
-        // 댓글 삭제
         itemCommentRepository.delete(comment);
     }
 
-    // 자식 댓글을 재귀적으로 삭제하는 메서드
     private void deleteChildComments(ItemCommentEntity comment) {
-        // 자식 댓글이 있을 경우, 자식 댓글들을 먼저 삭제합니다.
         if (comment.getChildren() != null) {
             for (ItemCommentEntity child : new ArrayList<>(comment.getChildren())) {
-                deleteChildComments(child);  // 자식 댓글이 또 자식을 가질 수 있으므로 재귀적으로 삭제합니다.
+                deleteChildComments(child);
             }
         }
     }
-
-
-
-
-//
-//        ItemCommentEntity commentParent = comment.getParent();
-//        if (comment.getParent() != null) {
-//            comment.getParent().getChildren().remove(comment);
-//            comment.setParent(null);
-//        }
-//        while (!comment.getChildren().isEmpty()) {
-//            for (ItemCommentEntity child : comment.getChildren()) {
-//                deleteItemComment(itemId, child.getId());
-//            }
-//        }
-//        if (comment.getChildren().isEmpty()) {
-//            item.getComments().remove(comment);
-//            comment.setParent(null);
-//            itemCommentRepository.delete(comment);
-//            assert commentParent != null;
-//            deleteItemComment(itemId, commentParent.getId());
-//        } else {
-//            item.getComments().remove(comment);
-//            comment.setParent(null);
-//            itemCommentRepository.delete(comment);
-//        }
 }
