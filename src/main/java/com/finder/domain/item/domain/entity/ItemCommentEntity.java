@@ -1,6 +1,5 @@
 package com.finder.domain.item.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.finder.domain.user.domain.entity.UserEntity;
 import com.finder.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -10,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
