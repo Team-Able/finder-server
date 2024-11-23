@@ -20,14 +20,14 @@ public class ItemCommentController {
     private final ItemCommentService itemCommentService;
 
     @Operation(summary = "댓글 작성")
-    @PostMapping()
-    public ResponseEntity<BaseResponse<ItemCommentResponse>> createComment (@PathVariable Long itemId, @Valid @RequestBody ItemCommentCreateRequest request) {
+    @PostMapping
+    public ResponseEntity<BaseResponse<ItemCommentResponse>> createComment(@PathVariable Long itemId, @Valid @RequestBody ItemCommentCreateRequest request) {
         return BaseResponse.of(itemCommentService.createItemComment(itemId, request), 200, "댓글 작성 성공");
     }
 
     @Operation(summary = "댓글 수정")
     @PatchMapping("/{commentId}")
-    public ResponseEntity<BaseResponse<ItemCommentResponse>> updateComment(@PathVariable Long itemId, @PathVariable Long commentId , @Valid @RequestBody ItemCommentUpdateRequest request) {
+    public ResponseEntity<BaseResponse<ItemCommentResponse>> updateComment(@PathVariable Long itemId, @PathVariable Long commentId, @Valid @RequestBody ItemCommentUpdateRequest request) {
         return BaseResponse.of(itemCommentService.updateItemComment(itemId,commentId,request), 200, "댓글 수정 성공");
     }
 

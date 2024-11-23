@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,15 +39,11 @@ public class ItemCommentEntity extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
-    @JsonIgnore
     private ItemCommentEntity parent;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<ItemCommentEntity> children;
+    private List<ItemCommentEntity> children = new ArrayList<>();
 
-    public List<ItemCommentEntity> getChildren() {
-        return children != null ? children : Collections.emptyList();
-    }
 
 }
 

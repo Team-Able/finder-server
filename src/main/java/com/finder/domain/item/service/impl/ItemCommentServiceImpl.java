@@ -73,8 +73,6 @@ public class ItemCommentServiceImpl implements ItemCommentService {
             throw new CustomException(ItemCommentError.ITEM_COMMENT_NOT_DELETABLE);
         }
 
-        deleteChildComments(comment);
-
         if (comment.getParent() != null) {
             comment.getParent().getChildren().remove(comment);
         }
@@ -82,13 +80,5 @@ public class ItemCommentServiceImpl implements ItemCommentService {
         item.getComments().remove(comment);
 
         itemCommentRepository.delete(comment);
-    }
-
-    private void deleteChildComments(ItemCommentEntity comment) {
-        if (comment.getChildren() != null) {
-            for (ItemCommentEntity child : new ArrayList<>(comment.getChildren())) {
-                deleteChildComments(child);
-            }
-        }
     }
 }

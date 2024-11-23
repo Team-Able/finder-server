@@ -6,6 +6,8 @@ import com.finder.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -44,7 +46,7 @@ public class ItemEntity extends BaseTimeEntity {
     private ItemStatus status;
 
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ItemCommentEntity> comments;
+    private List<ItemCommentEntity> comments = new ArrayList<>();
 
     public void increaseViewCount() {
         this.viewCount++;
