@@ -1,4 +1,4 @@
-package com.finder.domain.comment.exception;
+package com.finder.domain.item.error;
 
 import com.finder.global.exception.CustomError;
 import lombok.Getter;
@@ -7,8 +7,9 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
-public enum CommentException implements CustomError {
-    Parent_Comment_Not_Found(HttpStatus.NOT_FOUND, "Parent comment not found");
+public enum ItemError implements CustomError {
+    ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "Item not found")
+    ;
 
     private final HttpStatus status;
     private final String message;

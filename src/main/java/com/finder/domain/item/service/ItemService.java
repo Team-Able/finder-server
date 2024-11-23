@@ -20,7 +20,7 @@ public interface ItemService {
 
     ItemResponse foundItem(Long itemId);
 
-    ItemDetailResponse getItem(Long itemId, UUID userId);
+    ItemDetailResponse getItem(Long itemId);
 
     ItemResponse createItem(ItemCreateRequest request);
 

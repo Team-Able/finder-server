@@ -1,6 +1,5 @@
 package com.finder.domain.item.service.impl;
 
-import com.finder.domain.comment.controller.CommentController;
 import com.finder.domain.item.domain.entity.ItemEntity;
 import com.finder.domain.item.domain.entity.ItemLocation;
 import com.finder.domain.item.domain.enums.ItemStatus;
@@ -9,18 +8,18 @@ import com.finder.domain.item.dto.response.ItemDetailResponse;
 import com.finder.domain.item.dto.response.ItemResponse;
 import com.finder.domain.item.repository.ItemRepository;
 import com.finder.domain.item.service.ItemService;
+import com.finder.global.security.holder.SecurityHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
-    private final CommentController commentController;
+    private final SecurityHolder securityHolder;
 
     @Override
     public List<ItemResponse> getLostItems() {
@@ -61,18 +60,19 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDetailResponse getItem(Long itemId, UUID userId) {
+    public ItemDetailResponse getItem(Long itemId) {
         ItemEntity item = itemRepository.findById(itemId).orElseThrow();
 
         item.increaseViewCount();
 
-        return ItemDetailResponse.of(item, userId);
+        return ItemDetailResponse.of(item);
     }
 
     @Override
     public ItemResponse createItem(ItemCreateRequest request) {
         ItemEntity item = itemRepository.save(ItemEntity.builder()
                 .title(request.title())
+                .author(securityHolder.getPrincipal())
                 .content(request.content())
                 .imageUrl(request.imageUrl())
                 .location(ItemLocation.builder()
