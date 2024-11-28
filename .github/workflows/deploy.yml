@@ -45,7 +45,7 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
 
       - name: Deploy & Run
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v0.1.9
         id: deploy
         with:
           host: ${{ secrets.HOST }}
