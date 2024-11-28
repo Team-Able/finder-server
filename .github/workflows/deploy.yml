@@ -50,25 +50,14 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
+          key: ${{ secrets.KEY }} # 기존 SSH 키를 사용
           script: |
-            # Stop and remove existing containers
             sudo docker rm -f $(docker ps -qa)
-
-            # Pull the latest image
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
-
-            # Decode environment variables and save to a file
             touch ./production.env
             echo '${{ secrets.ENVIRONMENT }}' | base64 --decode > ./production.env
-
-            # Run Docker container with environment variables
             docker run --env-file ./production.env -d -p 8080:8080 --name pin-backend ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
-
-            # Clean up
             rm ./production.env
-
-            # Remove unused images
             docker image prune -f
 
       - name: CI Success Notification
