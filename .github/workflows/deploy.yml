@@ -38,20 +38,11 @@ jobs:
           chmod +x ./gradlew
           ./gradlew clean bootJar -x test
 
-      - name: Debug Docker Info
-        run: |
-          echo "Docker Username: ${{ secrets.DOCKER_USERNAME }}"
-          echo "Docker Image Name: ${{ secrets.DOCKER_IMAGE_NAME }}"
-
       - name: Docker build & push
         run: |
-          if [ -z "${{ secrets.DOCKER_USERNAME }}" ] || [ -z "${{ secrets.DOCKER_IMAGE_NAME }}" ]; then
-            echo "Docker username or image name is missing!"
-            exit 1
-          fi
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest .
-          docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
+          docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }} .
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
 
       - name: Deploy & Run
         uses: appleboy/ssh-action@master
@@ -61,12 +52,23 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           script: |
+            # Stop and remove existing containers
             sudo docker rm -f $(docker ps -qa)
+
+            # Pull the latest image
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
+
+            # Decode environment variables and save to a file
             touch ./production.env
             echo '${{ secrets.ENVIRONMENT }}' | base64 --decode > ./production.env
+
+            # Run Docker container with environment variables
             docker run --env-file ./production.env -d -p 8080:8080 --name pin-backend ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
+
+            # Clean up
             rm ./production.env
+
+            # Remove unused images
             docker image prune -f
 
       - name: CI Success Notification
