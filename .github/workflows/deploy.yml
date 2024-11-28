@@ -41,8 +41,8 @@ jobs:
       - name: Docker build & push
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }} .
-          docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
+          docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }} .
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
 
       - name: Deploy & Run
         uses: appleboy/ssh-action@master
@@ -51,11 +51,24 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
-          envs: GITHUB_SHA
           script: |
+            # Stop and remove existing containers
             sudo docker rm -f $(docker ps -qa)
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
-            docker-compose up -d
+
+            # Pull the latest image
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
+
+            # Decode environment variables and save to a file
+            touch ./production.env
+            echo '${{ secrets.ENVIRONMENT }}' | base64 --decode > ./production.env
+
+            # Run Docker container with environment variables
+            docker run --env-file ./production.env -d -p 8080:8080 --name pin-backend ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
+
+            # Clean up
+            rm ./production.env
+
+            # Remove unused images
             docker image prune -f
 
       - name: CI Success Notification
