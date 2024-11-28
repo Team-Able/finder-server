@@ -46,7 +46,6 @@ jobs:
 
       - name: Deploy & Run
         uses: appleboy/ssh-action@v0.1.9
-        port: 22
         id: deploy
         with:
           host: ${{ secrets.HOST }}
