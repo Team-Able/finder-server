@@ -45,12 +45,13 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
 
       - name: Deploy & Run
-        uses: appleboy/ssh-action@v0.1.9
+        uses: appleboy/ssh-action@master
         id: deploy
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }} # 기존 SSH 키를 사용
+          port: "22"
           script: |
             sudo docker rm -f $(docker ps -qa)
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
