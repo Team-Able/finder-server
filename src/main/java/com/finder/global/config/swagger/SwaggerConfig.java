@@ -23,7 +23,7 @@ public class SwaggerConfig {
                 )
                 .servers(List.of(
                         new Server()
-                                .url("https://15.165.119.40:8080")
+                                .url("http://15.165.119.40:8080")
                                 .description("Production Server"),
                         new Server()
                                 .url("http://localhost:8080")
