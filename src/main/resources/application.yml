@@ -4,6 +4,10 @@ spring:
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
     driver-class-name: org.mariadb.jdbc.Driver
+    hikari:
+      connectionTimeout: 30000
+      maxLifetime: 1800000
+      maximumPoolSize: 10
   data:
     redis:
       host: ${REDIS_HOST}
@@ -12,6 +16,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: ${DDL_AUTO}
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDB103Dialect
+        transaction.coordinator_class: jdbc
   upload:
     path: ${UPLOAD_PATH}
   servlet:
