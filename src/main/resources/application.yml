@@ -18,7 +18,7 @@ spring:
       ddl-auto: ${DDL_AUTO}
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.MariaDBDialect
         format_sql: true
     show-sql: true
   upload:
