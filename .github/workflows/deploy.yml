@@ -51,6 +51,8 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
+          port: 22
+          debug: true
           timeout: 10m
           script: |
             cd ~
