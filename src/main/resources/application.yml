@@ -18,8 +18,7 @@ spring:
       ddl-auto: ${DDL_AUTO}
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MariaDB103Dialect
-        transaction.coordinator_class: jdbc
+        dialect: org.hibernate.dialect.MariaDBDialect
   upload:
     path: ${UPLOAD_PATH}
   servlet:
