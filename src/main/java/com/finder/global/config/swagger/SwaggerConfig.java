@@ -23,7 +23,7 @@ public class SwaggerConfig {
                 )
                 .servers(List.of(
                         new Server()
-                                .url("https://api.finder.mcv.kr")
+                                .url("https://ec2-15-165-119-40.ap-northeast-2.compute.amazonaws.com:8080")
                                 .description("Production Server"),
                         new Server()
                                 .url("http://localhost:8080")
