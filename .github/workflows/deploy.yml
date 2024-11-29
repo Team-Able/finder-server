@@ -62,7 +62,6 @@ jobs:
             echo '${{ secrets.ENVIRONMENT }}' | base64 --decode > ./production.env
             docker run --env-file production.env -d -p 8080:8080 --name finder-backend ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
             rm ./production.env
-      
 
       - name: CI Success Notification
         uses: sarisia/actions-status-discord@v1
