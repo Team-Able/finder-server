@@ -19,6 +19,8 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MariaDBDialect
+        format_sql: true
+    show-sql: true
   upload:
     path: ${UPLOAD_PATH}
   servlet:
