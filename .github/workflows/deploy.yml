@@ -78,4 +78,3 @@ jobs:
           title: CI
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           color: FF0000
-
