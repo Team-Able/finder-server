@@ -14,26 +14,26 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "ItemComment", description = "분실물 댓글 관련 API")
 @RestController
-@RequestMapping("/items/{itemId}/comments")
+@RequestMapping("/items/comments")
 @RequiredArgsConstructor
 public class ItemCommentController {
     private final ItemCommentService itemCommentService;
 
     @Operation(summary = "댓글 작성")
     @PostMapping
-    public ResponseEntity<BaseResponse<ItemCommentResponse>> createComment(@PathVariable Long itemId, @Valid @RequestBody ItemCommentCreateRequest request) {
+    public ResponseEntity<BaseResponse<ItemCommentResponse>> createComment(@RequestParam Long itemId, @Valid @RequestBody ItemCommentCreateRequest request) {
         return BaseResponse.of(itemCommentService.createItemComment(itemId, request), 200, "댓글 작성 성공");
     }
 
     @Operation(summary = "댓글 수정")
     @PatchMapping("/{commentId}")
-    public ResponseEntity<BaseResponse<ItemCommentResponse>> updateComment(@PathVariable Long itemId, @PathVariable Long commentId, @Valid @RequestBody ItemCommentUpdateRequest request) {
+    public ResponseEntity<BaseResponse<ItemCommentResponse>> updateComment(@RequestParam Long itemId, @PathVariable Long commentId, @Valid @RequestBody ItemCommentUpdateRequest request) {
         return BaseResponse.of(itemCommentService.updateItemComment(itemId,commentId,request), 200, "댓글 수정 성공");
     }
 
     @Operation(summary = "댓글 삭제")
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<BaseResponse<Void>> deleteComment(@PathVariable Long itemId, @PathVariable Long commentId) {
+    public ResponseEntity<BaseResponse<Void>> deleteComment(@RequestParam Long itemId, @PathVariable Long commentId) {
         itemCommentService.deleteItemComment(itemId,commentId);
 
         return BaseResponse.of(null, 200, "댓글 삭제 성공");
