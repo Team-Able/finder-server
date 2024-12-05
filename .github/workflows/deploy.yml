@@ -53,30 +53,15 @@ jobs:
           key: ${{ secrets.KEY }}
           port: 22
           script: |
-            set -e
-            echo "Checking disk space..."
-            df -h
-            echo "Cleaning up unused Docker resources..."
-            docker system prune -f -a
-            echo '${{ secrets.DOCKER_PASSWORD }}' | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
-            echo "Stopping and removing containers for image: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}..."
-            containers=$(docker ps -aq -f "ancestor=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}")
-            if [ -n "$containers" ]; then
-              docker stop $containers
-              docker rm $containers
-            else
-              echo "No containers found for image: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}."
-            fi
-            echo "Pulling the latest Docker image..."
+            cd ~
+            echo '${{ secrets.DOCKER_PASSWORD }}' |  docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
+            docker stop $(docker ps -aq -f 'ancestor=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}')
+            docker rm $(docker ps -aq -f 'ancestor=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}')
             docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
-            echo "Creating environment file..."
             touch ./production.env
             echo '${{ secrets.ENVIRONMENT }}' | base64 --decode > ./production.env
-            echo "Starting new container..."
             docker run --env-file production.env -d -p 8080:8080 --name finder-backend ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
-            echo "Cleaning up environment file..."
             rm ./production.env
-      
 
       - name: CI Success Notification
         uses: sarisia/actions-status-discord@v1
