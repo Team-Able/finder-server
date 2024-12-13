@@ -18,6 +18,9 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(name = "user_image", nullable = true)
+    private String profileImageURL;
+
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 

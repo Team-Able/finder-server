@@ -1,54 +1,39 @@
 package com.finder.domain.file.service.impl;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.finder.domain.file.error.FileError;
 import com.finder.domain.file.service.FileService;
-import com.finder.global.config.upload.UploadProperties;
 import com.finder.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 @Service
 @RequiredArgsConstructor
 public class FileServiceImpl implements FileService {
-    private final UploadProperties uploadProperties;
+    private final AmazonS3Client amazonS3Client;
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
 
     @Override
     public String uploadFile(MultipartFile file) {
-        String basename = FilenameUtils.getBaseName(file.getOriginalFilename());
-        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
-        String filename = generateFilename(basename, extension);
-        File directory = new File(uploadProperties.getPath());
-        File f = new File(directory, filename);
-
-        if (!directory.exists()) {
-            directory.mkdirs();
-        }
-
         try {
-            file.transferTo(f);
+            String fileName = "finder/image/" + file.getOriginalFilename() + "." + file.getOriginalFilename().split("\\.")[1];
+
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType(file.getContentType());
+            metadata.setContentLength(file.getSize());
+
+            amazonS3Client.putObject(bucket, fileName, file.getInputStream(), metadata);
+
+            return amazonS3Client.getUrl(bucket, fileName).toString();
         } catch (IOException e) {
             throw new CustomException(FileError.FILE_UPLOAD_FAILED);
         }
-
-        return filename;
-    }
-
-    private String generateFilename(String filename, String extension) {
-        String newFilename = filename + "." + extension;
-        int i = 1;
-
-        while (new File(uploadProperties.getPath(), newFilename).exists()) {
-            newFilename = filename + "(" + i + ")." + extension;
-            i++;
-        }
-
-        return newFilename;
     }
 }
