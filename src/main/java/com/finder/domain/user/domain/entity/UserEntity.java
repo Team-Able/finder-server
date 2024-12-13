@@ -34,7 +34,3 @@ public class UserEntity {
     @Column(name = "role", nullable = false)
     private UserRole role;
 }
-
-// TODO: 유저 프로필 이미지 저장 작업 완료, 회원탈퇴 로직 완료
-
-// TODO: S3 써서 이미지 연결해야함, 내 글, 내 댓글 보기 만들어야됌
