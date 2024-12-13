@@ -11,7 +11,9 @@ public enum UserError implements CustomError {
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "User not found"),
     USER_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "User already exists"),
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "Invalid password"),
-    USERNAME_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "Username already exists");
+    USERNAME_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "Username already exists"),
+    USER_SECESSION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "User secession failed"),
+    ;
 
     private final HttpStatus status;
     private final String message;

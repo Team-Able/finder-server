@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record SignUpRequest(
+
+        String profileImageURL,
+
         @NotBlank
         @Size(min = 3, max = 20)
         String username,
