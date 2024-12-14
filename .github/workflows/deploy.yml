@@ -39,10 +39,14 @@ jobs:
           ./gradlew clean bootJar -x test
 
       - name: Docker build & push
+        env:
+          IMAGE_TAG: ${{ github.sha }}
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }} .
-          docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
+          docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:${IMAGE_TAG} .
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:${IMAGE_TAG}
+          docker tag ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:${IMAGE_TAG} ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
 
       - name: Deploy & Run
         uses: appleboy/ssh-action@master
@@ -54,13 +58,13 @@ jobs:
           port: 22
           script: |
             cd ~
-            echo '${{ secrets.DOCKER_PASSWORD }}' |  docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
-            docker stop $(docker ps -aq -f 'ancestor=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}')
-            docker rm $(docker ps -aq -f 'ancestor=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}')
-            docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
+            echo '${{ secrets.DOCKER_PASSWORD }}' | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
+            docker ps -q -f "name=finder-backend" | xargs -r docker stop
+            docker ps -aq -f "name=finder-backend" | xargs -r docker rm
+            docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:${{ github.sha }}
             touch ./production.env
             echo '${{ secrets.ENVIRONMENT }}' | base64 --decode > ./production.env
-            docker run --env-file production.env -d -p 8080:8080 --name finder-backend ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
+            docker run --env-file production.env -d -p 8080:8080 --name finder-backend ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:${{ github.sha }}
             rm ./production.env
 
       - name: CI Success Notification
