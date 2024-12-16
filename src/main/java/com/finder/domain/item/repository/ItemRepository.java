@@ -2,10 +2,10 @@ package com.finder.domain.item.repository;
 
 import com.finder.domain.item.domain.entity.ItemEntity;
 import com.finder.domain.item.domain.enums.ItemStatus;
-import com.finder.domain.user.domain.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
     List<ItemEntity> findAllByStatus(ItemStatus status);
@@ -14,5 +14,5 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
 
     List<ItemEntity> findAllByStatusOrderByViewCountDesc(ItemStatus status);
 
-    void deleteAllByAuthor(UserEntity author);
+    void deleteAllByAuthorId(UUID authorId);
 }

@@ -5,6 +5,7 @@ import com.finder.domain.item.domain.entity.ItemEntity;
 import com.finder.domain.item.dto.response.ItemCommentResponse;
 import com.finder.domain.item.dto.response.ItemResponse;
 import com.finder.domain.item.repository.ItemRepository;
+import com.finder.domain.user.domain.entity.UserEntity;
 import com.finder.domain.user.dto.response.UserResponse;
 import com.finder.domain.user.error.UserError;
 import com.finder.domain.user.repository.UserRepository;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -38,10 +40,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void secession() {
-        itemRepository.deleteAllByAuthor(securityHolder.getPrincipal());
-        entityManager.flush();
-        userRepository.deleteById(securityHolder.getPrincipal().getId());
+        UserEntity user = securityHolder.getPrincipal();
+
+        userRepository.delete(user);
     }
+
+
 
     @Override
     public List<ItemResponse> getMyItems() {
