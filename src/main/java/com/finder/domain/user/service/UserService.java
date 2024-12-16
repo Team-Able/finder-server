@@ -1,8 +1,12 @@
 package com.finder.domain.user.service;
 
+import com.finder.domain.item.dto.response.ItemResponse;
 import com.finder.domain.user.dto.response.UserResponse;
+
+import java.util.List;
 
 public interface UserService {
     UserResponse getMe();
     void secession();
+    List<ItemResponse> getMyItems();
 }

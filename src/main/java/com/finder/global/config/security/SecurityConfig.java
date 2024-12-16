@@ -48,18 +48,16 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/files/**").permitAll()
+
+                        .requestMatchers(HttpMethod.POST, "/auth/signup", "/auth/login", "/auth/reissue").anonymous()
 
                         .requestMatchers(HttpMethod.GET, "/users/me").authenticated()
-
-                        .requestMatchers(HttpMethod.POST, "/files/upload").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/items/lost/latest", "/items/lost/popular", "/items/lost/region", "/items/found", "/items/{itemId}", "/items/search", "/items/search/autocomplete").permitAll()
                         .requestMatchers(HttpMethod.POST, "/items/lost").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/items/{itemId}").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/items/{itemId}").authenticated()
-
-                        .requestMatchers(HttpMethod.POST, "/auth/signup", "/auth/login", "/auth/reissue").anonymous()
 
                         .anyRequest().authenticated()
                 )

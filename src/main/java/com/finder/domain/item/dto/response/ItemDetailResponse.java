@@ -16,11 +16,10 @@ public record ItemDetailResponse(
         String imageUrl,
         ItemStatus status,
         ItemLocation location,
-        List<ItemCommentResponse> comments,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
     public static ItemDetailResponse of(ItemEntity item) {
-        return new ItemDetailResponse(item.getId(), item.getTitle(), item.getAuthor(), item.getContent(), item.getImageUrl(), item.getStatus(),item.getLocation(), item.getComments().stream().filter(comment -> comment.getParent() == null).map(ItemCommentResponse::of).toList(), item.getCreatedAt(), item.getUpdatedAt());
+        return new ItemDetailResponse(item.getId(), item.getTitle(), item.getAuthor(), item.getContent(), item.getImageUrl(), item.getStatus(),item.getLocation(), item.getCreatedAt(), item.getUpdatedAt());
     }
 }
