@@ -33,12 +33,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void secession() {
-        try {
+//        try {
             itemRepository.deleteAllByAuthor(securityHolder.getPrincipal());
             userRepository.deleteByEmail(securityHolder.getPrincipal().getEmail());
-        } catch (Exception e) {
-            throw new CustomException(UserError.USER_SECESSION_FAILED);
-        }
+//        } catch (Exception e) {
+//            throw new CustomException(UserError.USER_SECESSION_FAILED);
+//        }
     }
 
     @Override
