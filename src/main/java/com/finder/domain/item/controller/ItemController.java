@@ -95,5 +95,4 @@ public class ItemController {
     public ResponseEntity<BaseResponse<ItemDetailCommentResponse>> getItemDetailComments(@PathVariable Long itemId) {
         return BaseResponse.of(itemService.getItemDetailComment(itemId), 200, "분실물 댓글 조회 성공");
     }
-
 }
