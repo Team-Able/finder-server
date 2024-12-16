@@ -6,7 +6,6 @@ import com.finder.domain.item.domain.enums.ItemStatus;
 import com.finder.domain.user.domain.entity.UserEntity;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public record ItemDetailResponse(

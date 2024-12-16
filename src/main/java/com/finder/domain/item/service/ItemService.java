@@ -6,7 +6,6 @@ import com.finder.domain.item.dto.response.ItemDetailResponse;
 import com.finder.domain.item.dto.response.ItemResponse;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface ItemService {
     List<ItemResponse> getLostItems();
