@@ -11,6 +11,8 @@ import com.finder.domain.user.repository.UserRepository;
 import com.finder.domain.user.service.UserService;
 import com.finder.global.exception.CustomException;
 import com.finder.global.security.holder.SecurityHolder;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,9 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Override
     public UserResponse getMe() {
         return UserResponse.of(securityHolder.getPrincipal());
@@ -33,8 +38,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void secession() {
-            itemRepository.deleteAllByAuthor(securityHolder.getPrincipal());
-            userRepository.deleteById(securityHolder.getPrincipal().getId());
+        itemRepository.deleteAllByAuthor(securityHolder.getPrincipal());
+        entityManager.flush();
+        userRepository.deleteById(securityHolder.getPrincipal().getId());
     }
 
     @Override
