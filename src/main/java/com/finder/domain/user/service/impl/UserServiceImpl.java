@@ -1,5 +1,10 @@
 package com.finder.domain.user.service.impl;
 
+import com.finder.domain.item.domain.entity.ItemCommentEntity;
+import com.finder.domain.item.domain.entity.ItemEntity;
+import com.finder.domain.item.dto.response.ItemCommentResponse;
+import com.finder.domain.item.dto.response.ItemResponse;
+import com.finder.domain.item.repository.ItemRepository;
 import com.finder.domain.user.dto.response.UserResponse;
 import com.finder.domain.user.error.UserError;
 import com.finder.domain.user.repository.UserRepository;
@@ -9,11 +14,15 @@ import com.finder.global.security.holder.SecurityHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final SecurityHolder securityHolder;
     private final UserRepository userRepository;
+    private final ItemRepository itemRepository;
 
     @Override
     public UserResponse getMe() {
@@ -27,5 +36,12 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             throw new CustomException(UserError.USER_SECESSION_FAILED);
         }
+    }
+
+    @Override
+    public List<ItemResponse> getMyItems() {
+        List<ItemEntity> itemList = itemRepository.findAll();
+
+        return itemList.stream().map(ItemResponse::of).toList();
     }
 }
