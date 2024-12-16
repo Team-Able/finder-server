@@ -1,5 +1,6 @@
 package com.finder.domain.user.controller;
 
+import com.finder.domain.item.dto.response.ItemResponse;
 import com.finder.domain.user.dto.response.UserResponse;
 import com.finder.domain.user.service.UserService;
 import com.finder.global.common.BaseResponse;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Tag(name = "User", description = "사용자 API")
 @RestController
 @RequestMapping("/users")
@@ -23,6 +26,12 @@ public class UserController {
     @GetMapping("/me")
     public ResponseEntity<BaseResponse<UserResponse>> getMe() {
         return BaseResponse.of(userService.getMe(), 200, "내 정보 조회 성공");
+    }
+
+    @Operation(summary = "내 글 조회")
+    @GetMapping("/posts")
+    public ResponseEntity<BaseResponse<List<ItemResponse>>> getMyItems() {
+        return BaseResponse.of(userService.getMyItems(), 200, "내 글 조회 성공");
     }
 
     @Operation(summary = "회원 탈퇴")
