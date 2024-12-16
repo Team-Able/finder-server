@@ -59,6 +59,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/items/{itemId}").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/items/{itemId}").authenticated()
 
+                        .requestMatchers(HttpMethod.POST, "/auth/signup", "/auth/login", "/auth/reissue").anonymous()
+
                         .anyRequest().authenticated()
                 )
 
