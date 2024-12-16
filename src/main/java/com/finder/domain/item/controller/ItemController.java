@@ -4,6 +4,7 @@ import com.finder.domain.item.dto.request.ItemCommentCreateRequest;
 import com.finder.domain.item.dto.request.ItemCommentUpdateRequest;
 import com.finder.domain.item.dto.request.ItemCreateRequest;
 import com.finder.domain.item.dto.response.ItemCommentResponse;
+import com.finder.domain.item.dto.response.ItemDetailCommentResponse;
 import com.finder.domain.item.dto.response.ItemDetailResponse;
 import com.finder.domain.item.dto.response.ItemResponse;
 import com.finder.domain.item.service.ItemCommentService;
@@ -89,4 +90,9 @@ public class ItemController {
         return BaseResponse.of(null, 200, "분실물 삭제 성공");
     }
 
+    @Operation(summary = "분실물 댓글 조회")
+    @GetMapping("/{itemId}/comment")
+    public ResponseEntity<BaseResponse<ItemDetailCommentResponse>> getItemDetailComments(@PathVariable Long itemId) {
+        return BaseResponse.of(itemService.getItemDetailComment(itemId), 200, "분실물 댓글 조회 성공");
+    }
 }
