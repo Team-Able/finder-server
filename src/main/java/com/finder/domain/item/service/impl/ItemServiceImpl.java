@@ -4,6 +4,7 @@ import com.finder.domain.item.domain.entity.ItemEntity;
 import com.finder.domain.item.domain.entity.ItemLocation;
 import com.finder.domain.item.domain.enums.ItemStatus;
 import com.finder.domain.item.dto.request.ItemCreateRequest;
+import com.finder.domain.item.dto.response.ItemDetailCommentResponse;
 import com.finder.domain.item.dto.response.ItemDetailResponse;
 import com.finder.domain.item.dto.response.ItemResponse;
 import com.finder.domain.item.repository.ItemRepository;
@@ -96,6 +97,13 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void deleteItem(Long itemId) {
         itemRepository.deleteById(itemId);
+    }
+
+    @Override
+    public ItemDetailCommentResponse getItemDetailComment(Long itemId) {
+        ItemEntity item = itemRepository.findById(itemId).orElseThrow();
+
+        return ItemDetailCommentResponse.of(item);
     }
 
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
