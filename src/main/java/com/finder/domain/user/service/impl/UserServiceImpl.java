@@ -35,13 +35,9 @@ public class UserServiceImpl implements UserService {
     public void secession() {
         try {
             itemRepository.deleteAllByAuthor(securityHolder.getPrincipal());
-        } catch (Exception e) {
-            throw new CustomException(UserError.USER_SECESSION_FAILED1);
-        }
-        try {
             userRepository.deleteByEmail(securityHolder.getPrincipal().getEmail());
         } catch (Exception e) {
-            throw new CustomException(UserError.USER_SECESSION_FAILED2);
+            throw new CustomException(UserError.USER_SECESSION_FAILED);
         }
     }
 
