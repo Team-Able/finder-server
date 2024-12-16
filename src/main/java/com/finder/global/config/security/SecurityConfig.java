@@ -54,7 +54,7 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.GET, "/users/me").authenticated()
 
-                        .requestMatchers(HttpMethod.GET, "/items/lost/latest", "/items/lost/popular", "/items/lost/region", "/items/found", "/items/{itemId}").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/items/lost/latest", "/items/lost/popular", "/items/lost/region", "/items/found", "/items/{itemId}", "/items/search", "/items/search/autocomplete").permitAll()
                         .requestMatchers(HttpMethod.POST, "/items/lost").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/items/{itemId}").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/items/{itemId}").authenticated()
