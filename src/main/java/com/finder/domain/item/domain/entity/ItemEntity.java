@@ -23,7 +23,7 @@ public class ItemEntity extends BaseTimeEntity {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = true)
     @JoinColumn(name = "author_id", nullable = false)
     private UserEntity author;
 
