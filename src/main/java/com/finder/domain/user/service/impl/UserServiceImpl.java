@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void secession() {
             itemRepository.deleteAllByAuthor(securityHolder.getPrincipal());
-            userRepository.deleteByEmail(securityHolder.getPrincipal().getEmail());
+            userRepository.deleteById(securityHolder.getPrincipal().getId());
     }
 
     @Override
