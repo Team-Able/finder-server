@@ -6,9 +6,10 @@ import java.util.UUID;
 
 public record ItemCommentAuthorResponse(
         UUID id,
+        String profileImageUrl,
         String username
 ) {
     public static ItemCommentAuthorResponse of(UserEntity user) {
-        return new ItemCommentAuthorResponse(user.getId(), user.getUsername());
+        return new ItemCommentAuthorResponse(user.getId(), user.getProfileImageURL() ,user.getUsername());
     }
 }
