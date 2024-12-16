@@ -1,6 +1,5 @@
 package com.finder.domain.item.dto.response;
 
-import com.finder.domain.item.domain.entity.ItemCommentEntity;
 import com.finder.domain.user.domain.entity.UserEntity;
 
 import java.util.UUID;

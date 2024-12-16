@@ -1,12 +1,8 @@
 package com.finder.domain.item.controller;
 
-import com.finder.domain.item.dto.request.ItemCommentCreateRequest;
-import com.finder.domain.item.dto.request.ItemCommentUpdateRequest;
 import com.finder.domain.item.dto.request.ItemCreateRequest;
-import com.finder.domain.item.dto.response.ItemCommentResponse;
 import com.finder.domain.item.dto.response.ItemDetailResponse;
 import com.finder.domain.item.dto.response.ItemResponse;
-import com.finder.domain.item.service.ItemCommentService;
 import com.finder.domain.item.service.ItemService;
 import com.finder.global.common.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @Tag(name = "Item", description = "분실물 관련 API")
 @RestController
@@ -25,7 +20,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ItemController {
     private final ItemService itemService;
-    private final ItemCommentService itemCommentService;
 
     @Operation(summary = "분실물 목록 조회")
     @GetMapping("/lost")
@@ -88,5 +82,4 @@ public class ItemController {
 
         return BaseResponse.of(null, 200, "분실물 삭제 성공");
     }
-
 }
