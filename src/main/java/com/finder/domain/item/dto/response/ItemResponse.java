@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public record ItemResponse(
         Long id,
         String title,
-        UserEntity author,
+        ItemAuthorResponse author,
         String content,
         String imageUrl,
         ItemStatus status,
@@ -19,6 +19,6 @@ public record ItemResponse(
         LocalDateTime updatedAt
 ) {
     public static ItemResponse of(ItemEntity item) {
-        return new ItemResponse(item.getId(), item.getTitle(), item.getAuthor(), item.getContent(), item.getImageUrl(), item.getStatus(), item.getLocation(), item.getCreatedAt(), item.getUpdatedAt());
+        return new ItemResponse(item.getId(), item.getTitle(), ItemAuthorResponse.of(item.getAuthor()), item.getContent(), item.getImageUrl(), item.getStatus(), item.getLocation(), item.getCreatedAt(), item.getUpdatedAt());
     }
 }
