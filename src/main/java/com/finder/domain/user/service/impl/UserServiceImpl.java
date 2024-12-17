@@ -6,6 +6,7 @@ import com.finder.domain.item.dto.response.ItemCommentResponse;
 import com.finder.domain.item.dto.response.ItemResponse;
 import com.finder.domain.item.repository.ItemRepository;
 import com.finder.domain.user.domain.entity.UserEntity;
+import com.finder.domain.user.dto.request.UserUpdateRequest;
 import com.finder.domain.user.dto.response.UserResponse;
 import com.finder.domain.user.error.UserError;
 import com.finder.domain.user.repository.UserRepository;
@@ -52,5 +53,18 @@ public class UserServiceImpl implements UserService {
         List<ItemEntity> itemList = itemRepository.findAll();
 
         return itemList.stream().map(ItemResponse::of).toList();
+    }
+
+    @Override
+    @Transactional
+    public void updateUser(UserUpdateRequest request) {
+        UserEntity user = securityHolder.getPrincipal();
+
+        if (request.profileImageURL() != null)
+            user.setProfileImageURL(request.profileImageURL());
+        if (request.username() != null)
+            user.setUsername(request.username());
+
+        userRepository.save(user);
     }
 }
