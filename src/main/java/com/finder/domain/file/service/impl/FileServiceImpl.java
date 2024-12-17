@@ -23,7 +23,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public String uploadFile(MultipartFile file) {
         try {
-            String fileName = "finder/image/" + file.getOriginalFilename() + "." + file.getOriginalFilename().split("\\.")[1];
+            String fileName = "finder/image/" + file.getOriginalFilename();
 
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(file.getContentType());
