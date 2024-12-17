@@ -11,7 +11,7 @@ import java.util.List;
 public record ItemDetailResponse(
         Long id,
         String title,
-        UserEntity author,
+        ItemAuthorResponse author,
         String content,
         String imageUrl,
         ItemStatus status,
@@ -20,6 +20,6 @@ public record ItemDetailResponse(
         LocalDateTime updatedAt
 ) {
     public static ItemDetailResponse of(ItemEntity item) {
-        return new ItemDetailResponse(item.getId(), item.getTitle(), item.getAuthor(), item.getContent(), item.getImageUrl(), item.getStatus(),item.getLocation(), item.getCreatedAt(), item.getUpdatedAt());
+        return new ItemDetailResponse(item.getId(), item.getTitle(), ItemAuthorResponse.of(item.getAuthor()), item.getContent(), item.getImageUrl(), item.getStatus(),item.getLocation(), item.getCreatedAt(), item.getUpdatedAt());
     }
 }
