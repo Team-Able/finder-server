@@ -4,12 +4,14 @@ import com.finder.domain.user.domain.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
 @Getter
 @Entity
+@Setter
 @SuperBuilder
 @NoArgsConstructor
 @Table(name = "users")

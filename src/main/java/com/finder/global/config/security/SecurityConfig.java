@@ -53,6 +53,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/auth/signup", "/auth/login", "/auth/reissue").anonymous()
 
                         .requestMatchers(HttpMethod.GET, "/users/me").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/users/me").authenticated()
 
                         .requestMatchers(HttpMethod.GET, "/items/lost/latest", "/items/lost/popular", "/items/lost/region", "/items/found", "/items/{itemId}", "/items/search", "/items/search/autocomplete").permitAll()
                         .requestMatchers(HttpMethod.POST, "/items/lost").authenticated()
