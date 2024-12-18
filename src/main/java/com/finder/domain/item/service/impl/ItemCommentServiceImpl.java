@@ -27,8 +27,8 @@ public class ItemCommentServiceImpl implements ItemCommentService {
 
     @Override
     @Transactional
-    public ItemCommentResponse createItemComment(Long itemId, ItemCommentCreateRequest request) {
-        ItemEntity item = itemRepository.findById(itemId).orElseThrow(() -> new CustomException(ItemError.ITEM_NOT_FOUND));
+    public ItemCommentResponse createItemComment(ItemCommentCreateRequest request) {
+        ItemEntity item = itemRepository.findById(request.itemId()).orElseThrow(() -> new CustomException(ItemError.ITEM_NOT_FOUND));
         ItemCommentEntity parent = null;
         if (request.parentId() != null) {
             parent = itemCommentRepository.findById(request.parentId()).orElseThrow(
@@ -46,8 +46,8 @@ public class ItemCommentServiceImpl implements ItemCommentService {
     }
 
     @Override
-    public ItemCommentResponse updateItemComment(Long itemId, Long commentId, ItemCommentUpdateRequest request) {
-        ItemEntity item = itemRepository.findById(itemId).orElseThrow(() -> new CustomException(ItemError.ITEM_NOT_FOUND));
+    public ItemCommentResponse updateItemComment(Long commentId, ItemCommentUpdateRequest request) {
+        ItemEntity item = itemRepository.findById(request.itemId()).orElseThrow(() -> new CustomException(ItemError.ITEM_NOT_FOUND));
         ItemCommentEntity comment = item.getComments().stream().filter(itemCommentEntity -> itemCommentEntity.getId().equals(commentId)).findFirst().orElseThrow(() -> new CustomException(ItemCommentError.ITEM_COMMENT_NOT_FOUND));
         if (!comment.getAuthor().equals(securityHolder.getPrincipal())) {
             throw new CustomException(ItemCommentError.ITEM_COMMENT_NOT_DELETABLE);
