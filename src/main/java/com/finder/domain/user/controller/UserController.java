@@ -46,7 +46,7 @@ public class UserController {
 
     @Operation(summary = "내 정보 수정")
     @PatchMapping("/me")
-    public ResponseEntity<BaseResponse<Void>> updateMe(UserUpdateRequest request) {
+    public ResponseEntity<BaseResponse<Void>> updateMe(@RequestBody UserUpdateRequest request) {
         userService.updateUser(request);
         return BaseResponse.of(null, 200, "내 정보 수정 성공");
     }
