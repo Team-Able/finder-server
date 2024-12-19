@@ -10,6 +10,6 @@ public record ItemCommentAuthorResponse(
         String username
 ) {
     public static ItemCommentAuthorResponse of(UserEntity user) {
-        return new ItemCommentAuthorResponse(user.getId(), user.getProfileImageURL() ,user.getUsername());
+        return new ItemCommentAuthorResponse(user.getId(), user.getProfileImageURL(), user.getUsername());
     }
 }

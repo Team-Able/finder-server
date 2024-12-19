@@ -5,6 +5,7 @@ import com.finder.domain.item.dto.response.ItemResponse;
 import java.util.List;
 
 public interface ItemSearchService {
-     List<ItemResponse> searchItem(String keyword);
-     List<String> getAutoCompleteSuggestions(String prefix);
+    List<ItemResponse> searchItem(String keyword);
+
+    List<String> getAutoCompleteSuggestions(String prefix);
 }

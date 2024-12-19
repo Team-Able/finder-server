@@ -29,7 +29,7 @@ public class ItemCommentEntity extends BaseTimeEntity {
     private UserEntity author;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id",nullable = false)
+    @JoinColumn(name = "item_id", nullable = false)
     private ItemEntity item; //물품id
 
     @Column(name = "content", nullable = false)

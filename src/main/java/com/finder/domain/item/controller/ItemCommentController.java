@@ -28,7 +28,7 @@ public class ItemCommentController {
     @Operation(summary = "댓글 수정")
     @PatchMapping("/{commentId}")
     public ResponseEntity<BaseResponse<ItemCommentResponse>> updateComment(@PathVariable Long commentId, @Valid @RequestBody ItemCommentUpdateRequest request) {
-        return BaseResponse.of(itemCommentService.updateItemComment(commentId,request), 200, "댓글 수정 성공");
+        return BaseResponse.of(itemCommentService.updateItemComment(commentId, request), 200, "댓글 수정 성공");
     }
 
     @Operation(summary = "댓글 삭제", description = "엔드포인트에 삭제할 댓글 id, 바디에 itemId 입력")

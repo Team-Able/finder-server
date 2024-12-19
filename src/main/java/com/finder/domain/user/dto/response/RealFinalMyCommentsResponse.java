@@ -1,9 +1,6 @@
 package com.finder.domain.user.dto.response;
 
-import com.finder.domain.item.dto.response.ItemCommentResponse;
-
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public record RealFinalMyCommentsResponse(

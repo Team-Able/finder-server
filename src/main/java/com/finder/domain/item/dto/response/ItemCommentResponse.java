@@ -21,6 +21,5 @@ public record ItemCommentResponse(
                 comment.getId(), comment.getContent(), ItemCommentAuthorResponse.of(comment.getAuthor()), Optional.ofNullable(comment.getChildren()).orElse(Collections.emptyList()).stream().map(ItemCommentResponse::of).collect(Collectors.toList()), comment.getCreatedAt(), comment.getUpdatedAt()
         );
     }
-
 }
 

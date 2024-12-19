@@ -8,8 +8,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 @RequiredArgsConstructor
 public enum ItemError implements CustomError {
-    ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "Item not found")
-    ;
+    ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "Item not found");
 
     private final HttpStatus status;
     private final String message;
