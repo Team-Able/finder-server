@@ -1,11 +1,7 @@
 package com.finder.domain.user.controller;
 
-import com.finder.domain.item.domain.entity.ItemCommentEntity;
-import com.finder.domain.item.dto.response.ItemCommentResponse;
 import com.finder.domain.item.dto.response.ItemResponse;
 import com.finder.domain.user.dto.request.UserUpdateRequest;
-import com.finder.domain.user.dto.response.MyCommentResponse;
-import com.finder.domain.user.dto.response.MyCommentsResponse;
 import com.finder.domain.user.dto.response.RealFinalMyCommentsResponse;
 import com.finder.domain.user.dto.response.UserResponse;
 import com.finder.domain.user.service.UserService;
@@ -39,7 +35,7 @@ public class UserController {
 
     @Operation(summary = "회원 탈퇴")
     @DeleteMapping("/secession")
-    public ResponseEntity<BaseResponse<Void>> secession()  {
+    public ResponseEntity<BaseResponse<Void>> secession() {
         userService.secession();
         return BaseResponse.of(null, 200, "회원 탈퇴 성공");
     }

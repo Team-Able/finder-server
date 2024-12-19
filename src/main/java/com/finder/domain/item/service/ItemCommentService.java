@@ -6,6 +6,8 @@ import com.finder.domain.item.dto.response.ItemCommentResponse;
 
 public interface ItemCommentService {
     ItemCommentResponse createItemComment(ItemCommentCreateRequest request);
+
     ItemCommentResponse updateItemComment(Long commentId, ItemCommentUpdateRequest request);
+
     void deleteItemComment(Long itemId, Long commentId);
 }

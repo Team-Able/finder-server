@@ -19,56 +19,26 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ItemSearchServiceImpl implements ItemSearchService {
-    private final ItemRepository itemRepository;
-    private final Map<Long, SearchDocument> searchIndex = new ConcurrentHashMap<>();
-    private final Map<String, CacheEntry<List<String>>> autoCompleteCache = new ConcurrentHashMap<>();
-
     private static final int MAX_EDIT_DISTANCE = 2;
     private static final int MAX_SUGGESTIONS = 10;
     private static final double JAMO_SIMILARITY_THRESHOLD = 0.7;
     private static final long CACHE_DURATION_MILLIS = 300000; // 5분
-
     private static final char[] CHOSUNG_LIST = {
             'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ',
             'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'
     };
-
     private static final char[] JUNGSUNG_LIST = {
             'ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ', 'ㅘ',
             'ㅙ', 'ㅚ', 'ㅛ', 'ㅜ', 'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ'
     };
-
     private static final char[] JONGSUNG_LIST = {
             ' ', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ',
             'ㄼ', 'ㄽ', 'ㄾ', 'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ',
             'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'
     };
-
-    @Data
-    @AllArgsConstructor
-    private static class SearchDocument {
-        private Long id;
-        private String title;
-        private String content;
-        private String normalizedTitle;
-        private String normalizedContent;
-        private String titleChosung;
-        private List<String> wordChosungs;
-        private String titleJamo;
-        private List<String> titleNGrams;
-        private String initials;
-    }
-
-    @Data
-    @AllArgsConstructor
-    private static class CacheEntry<T> {
-        private T value;
-        private long expirationTime;
-
-        public boolean isExpired() {
-            return System.currentTimeMillis() > expirationTime;
-        }
-    }
+    private final ItemRepository itemRepository;
+    private final Map<Long, SearchDocument> searchIndex = new ConcurrentHashMap<>();
+    private final Map<String, CacheEntry<List<String>>> autoCompleteCache = new ConcurrentHashMap<>();
 
     @PostConstruct
     public void init() {
@@ -190,7 +160,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         // 5. 편집 거리 기반 퍼지 매칭 (40점)
         int distance = calculateLevenshteinDistance(doc.getNormalizedTitle(), keyword);
         if (distance <= MAX_EDIT_DISTANCE) {
-            score += 40.0 * (1.0 - (double)distance / MAX_EDIT_DISTANCE);
+            score += 40.0 * (1.0 - (double) distance / MAX_EDIT_DISTANCE);
         }
 
         // 6. 내용 매칭 (20점)
@@ -305,7 +275,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 
     private boolean isAllChosung(String text) {
         return text.chars()
-                .mapToObj(ch -> String.valueOf((char)ch))
+                .mapToObj(ch -> String.valueOf((char) ch))
                 .allMatch(c -> c.matches("[ㄱ-ㅎ]"));
     }
 
@@ -386,5 +356,31 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         }
 
         return prev[s2.length()];
+    }
+
+    @Data
+    @AllArgsConstructor
+    private static class SearchDocument {
+        private Long id;
+        private String title;
+        private String content;
+        private String normalizedTitle;
+        private String normalizedContent;
+        private String titleChosung;
+        private List<String> wordChosungs;
+        private String titleJamo;
+        private List<String> titleNGrams;
+        private String initials;
+    }
+
+    @Data
+    @AllArgsConstructor
+    private static class CacheEntry<T> {
+        private T value;
+        private long expirationTime;
+
+        public boolean isExpired() {
+            return System.currentTimeMillis() > expirationTime;
+        }
     }
 }

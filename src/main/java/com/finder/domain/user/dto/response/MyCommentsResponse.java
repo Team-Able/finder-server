@@ -1,10 +1,8 @@
 package com.finder.domain.user.dto.response;
 
 import com.finder.domain.item.domain.entity.ItemCommentEntity;
-import com.finder.domain.item.dto.response.ItemCommentResponse;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public record MyCommentsResponse(
         List<MyCommentResponse> myComments

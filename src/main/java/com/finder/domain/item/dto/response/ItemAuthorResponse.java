@@ -1,7 +1,6 @@
 package com.finder.domain.item.dto.response;
 
 import com.finder.domain.user.domain.entity.UserEntity;
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 
 import java.util.UUID;
 

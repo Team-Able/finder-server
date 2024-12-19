@@ -1,21 +1,18 @@
 package com.finder.domain.item.service.impl;
 
+import com.finder.domain.item.domain.entity.ItemCommentEntity;
 import com.finder.domain.item.domain.entity.ItemEntity;
 import com.finder.domain.item.domain.entity.ItemLocation;
 import com.finder.domain.item.domain.enums.ItemStatus;
 import com.finder.domain.item.dto.request.ItemCreateRequest;
-import com.finder.domain.item.dto.response.ItemCommentResponse;
-import com.finder.domain.item.dto.response.ItemDetailCommentResponse;
-import com.finder.domain.item.dto.response.ItemDetailResponse;
-import com.finder.domain.item.dto.response.ItemResponse;
+import com.finder.domain.item.dto.response.*;
 import com.finder.domain.item.repository.ItemRepository;
 import com.finder.domain.item.service.ItemService;
 import com.finder.global.security.holder.SecurityHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -108,6 +105,63 @@ public class ItemServiceImpl implements ItemService {
         } else {
             return ItemDetailCommentResponse.of(item);
         }
+    }
+
+    @Override
+    public List<ItemCommentResponse> getItemComments(Long itemId) {
+        ItemEntity item = itemRepository.findById(itemId).orElseThrow();
+        List<ItemCommentEntity> allComments = item.getComments();
+        UUID currentUserId = securityHolder.getPrincipal().getId();
+        boolean isItemAuthor = item.getAuthor().equals(securityHolder.getPrincipal());
+
+        return allComments.stream()
+                .filter(comment -> comment.getParent() == null) // Get only parent comments
+                .map(comment -> convertToResponse(comment, currentUserId, isItemAuthor))
+                .toList();
+    }
+
+    private ItemCommentResponse convertToResponse(ItemCommentEntity comment, UUID currentUserId, boolean isItemAuthor) {
+        // 댓글 내용이 보이는 조건:
+        // 1. 게시글 작성자이거나
+        // 2. 자신이 작성한 댓글인 경우
+        boolean isCommentVisible = isItemAuthor ||
+                comment.getAuthor().getId().equals(currentUserId);
+
+        String content = isCommentVisible ? comment.getContent() : "비밀 댓글입니다.";
+
+        List<ItemCommentResponse> children = Optional.ofNullable(comment.getChildren())
+                .orElse(Collections.emptyList())
+                .stream()
+                .map(child -> {
+                    // 대댓글 내용이 보이는 조건:
+                    // 1. 게시글 작성자이거나
+                    // 2. 부모 댓글의 작성자가 현재 사용자인 경우 (자신의 댓글의 모든 대댓글)
+                    // 3. 대댓글 작성자가 현재 사용자인 경우
+                    boolean isChildVisible = isItemAuthor ||
+                            comment.getAuthor().getId().equals(currentUserId) ||
+                            child.getAuthor().getId().equals(currentUserId);
+
+                    String childContent = isChildVisible ? child.getContent() : "비밀 댓글입니다.";
+
+                    return new ItemCommentResponse(
+                            child.getId(),
+                            childContent,
+                            ItemCommentAuthorResponse.of(child.getAuthor()),
+                            Collections.emptyList(),
+                            child.getCreatedAt(),
+                            child.getUpdatedAt()
+                    );
+                })
+                .toList();
+
+        return new ItemCommentResponse(
+                comment.getId(),
+                content,
+                ItemCommentAuthorResponse.of(comment.getAuthor()),
+                children,
+                comment.getCreatedAt(),
+                comment.getUpdatedAt()
+        );
     }
 
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {

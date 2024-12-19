@@ -8,6 +8,6 @@ public record UserResponse(
         String email
 ) {
     public static UserResponse of(UserEntity user) {
-        return new UserResponse(user.getProfileImageURL() ,user.getUsername(), user.getEmail());
+        return new UserResponse(user.getProfileImageURL(), user.getUsername(), user.getEmail());
     }
 }

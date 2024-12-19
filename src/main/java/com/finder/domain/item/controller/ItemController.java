@@ -2,7 +2,6 @@ package com.finder.domain.item.controller;
 
 import com.finder.domain.item.dto.request.ItemCreateRequest;
 import com.finder.domain.item.dto.response.ItemCommentResponse;
-import com.finder.domain.item.dto.response.ItemDetailCommentResponse;
 import com.finder.domain.item.dto.response.ItemDetailResponse;
 import com.finder.domain.item.dto.response.ItemResponse;
 import com.finder.domain.item.service.ItemService;
@@ -87,7 +86,7 @@ public class ItemController {
 
     @Operation(summary = "분실물 댓글 조회")
     @GetMapping("/{itemId}/comment")
-    public ResponseEntity<BaseResponse<ItemDetailCommentResponse>> getItemDetailComments(@PathVariable Long itemId) {
-        return BaseResponse.of(itemService.getItemDetailComment(itemId), 200, "분실물 댓글 조회 성공");
+    public ResponseEntity<BaseResponse<List<ItemCommentResponse>>> getItemDetailComments(@PathVariable Long itemId) {
+        return BaseResponse.of(itemService.getItemComments(itemId), 200, "분실물 댓글 조회 성공");
     }
 }

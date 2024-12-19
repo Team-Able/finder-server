@@ -1,6 +1,7 @@
 package com.finder.domain.item.service;
 
 import com.finder.domain.item.dto.request.ItemCreateRequest;
+import com.finder.domain.item.dto.response.ItemCommentResponse;
 import com.finder.domain.item.dto.response.ItemDetailCommentResponse;
 import com.finder.domain.item.dto.response.ItemDetailResponse;
 import com.finder.domain.item.dto.response.ItemResponse;
@@ -29,4 +30,6 @@ public interface ItemService {
     void deleteItem(Long itemId);
 
     ItemDetailCommentResponse getItemDetailComment(Long itemId);
+
+    List<ItemCommentResponse> getItemComments(Long itemId);
 }
