@@ -36,15 +36,27 @@ public class AuthServiceImpl implements AuthService {
             throw new CustomException(UserError.USER_ALREADY_EXISTS);
         }
 
-        UserEntity user = UserEntity.builder()
-                .email(request.email())
-                .password(passwordEncoder.encode(request.password()))
-                .username(request.username())
-                .profileImageURL(request.profileImageURL())
-                .role(UserRole.USER)
-                .build();
+        if (request.profileImageURL() == null) {
+            UserEntity user = UserEntity.builder()
+                    .email(request.email())
+                    .password(passwordEncoder.encode(request.password()))
+                    .username(request.username())
+                    .profileImageURL("https://anding-pin-s3.s3.ap-northeast-2.amazonaws.com/finder/images/%E1%84%80%E1%85%B5%E1%84%87%E1%85%A9%E1%86%AB%20%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%91%E1%85%B5%E1%86%AF.png")
+                    .role(UserRole.USER)
+                    .build();
+            userRepository.save(user);
+        } else {
 
-        userRepository.save(user);
+            UserEntity user = UserEntity.builder()
+                    .email(request.email())
+                    .password(passwordEncoder.encode(request.password()))
+                    .username(request.username())
+                    .profileImageURL(request.profileImageURL())
+                    .role(UserRole.USER)
+                    .build();
+            userRepository.save(user);
+        }
+
     }
 
     @Override
