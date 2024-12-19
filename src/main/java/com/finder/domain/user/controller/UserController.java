@@ -1,7 +1,12 @@
 package com.finder.domain.user.controller;
 
+import com.finder.domain.item.domain.entity.ItemCommentEntity;
+import com.finder.domain.item.dto.response.ItemCommentResponse;
 import com.finder.domain.item.dto.response.ItemResponse;
 import com.finder.domain.user.dto.request.UserUpdateRequest;
+import com.finder.domain.user.dto.response.MyCommentResponse;
+import com.finder.domain.user.dto.response.MyCommentsResponse;
+import com.finder.domain.user.dto.response.RealFinalMyCommentsResponse;
 import com.finder.domain.user.dto.response.UserResponse;
 import com.finder.domain.user.service.UserService;
 import com.finder.global.common.BaseResponse;
@@ -44,5 +49,11 @@ public class UserController {
     public ResponseEntity<BaseResponse<Void>> updateMe(UserUpdateRequest request) {
         userService.updateUser(request);
         return BaseResponse.of(null, 200, "내 정보 수정 성공");
+    }
+
+    @Operation(summary = "내 댓글 조회")
+    @GetMapping("/comments")
+    public ResponseEntity<BaseResponse<RealFinalMyCommentsResponse>> getMyComments() {
+        return BaseResponse.of(userService.getMyComments(), 200, "sadas");
     }
 }

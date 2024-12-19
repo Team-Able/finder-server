@@ -4,10 +4,11 @@ import com.finder.domain.item.domain.entity.ItemCommentEntity;
 import com.finder.domain.item.domain.entity.ItemEntity;
 import com.finder.domain.item.dto.response.ItemCommentResponse;
 import com.finder.domain.item.dto.response.ItemResponse;
+import com.finder.domain.item.repository.ItemCommentRepository;
 import com.finder.domain.item.repository.ItemRepository;
 import com.finder.domain.user.domain.entity.UserEntity;
 import com.finder.domain.user.dto.request.UserUpdateRequest;
-import com.finder.domain.user.dto.response.UserResponse;
+import com.finder.domain.user.dto.response.*;
 import com.finder.domain.user.error.UserError;
 import com.finder.domain.user.repository.UserRepository;
 import com.finder.domain.user.service.UserService;
@@ -21,7 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -30,6 +33,7 @@ public class UserServiceImpl implements UserService {
     private final SecurityHolder securityHolder;
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
+    private final ItemCommentRepository itemCommentRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -52,7 +56,7 @@ public class UserServiceImpl implements UserService {
     public List<ItemResponse> getMyItems() {
         List<ItemEntity> itemList = itemRepository.findAll();
 
-        return itemList.stream().map(ItemResponse::of).toList();
+        return itemList.stream().filter(itemEntity -> itemEntity.getAuthor().equals(securityHolder.getPrincipal())).map(ItemResponse::of).toList();
     }
 
     @Override
@@ -66,5 +70,10 @@ public class UserServiceImpl implements UserService {
             user.setUsername(request.username());
 
         userRepository.save(user);
+    }
+
+    @Override
+    public RealFinalMyCommentsResponse getMyComments() {
+        return RealFinalMyCommentsResponse.convertToCustomFormat(MyCommentsResponse.of(itemCommentRepository.findAllDistinctByAuthor(securityHolder.getPrincipal())));
     }
 }
