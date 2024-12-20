@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface ItemCommentRepository extends JpaRepository<ItemCommentEntity, Long> {
     List<ItemCommentEntity> findAllDistinctByAuthor(UserEntity author);
+
+    List<ItemCommentEntity> findAllDistinctByItemId(Long itemId);
 }
