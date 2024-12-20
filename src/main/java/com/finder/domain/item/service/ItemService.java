@@ -1,23 +1,20 @@
 package com.finder.domain.item.service;
 
 import com.finder.domain.item.dto.request.ItemCreateRequest;
-import com.finder.domain.item.dto.response.ItemCommentResponse;
-import com.finder.domain.item.dto.response.ItemDetailCommentResponse;
-import com.finder.domain.item.dto.response.ItemDetailResponse;
-import com.finder.domain.item.dto.response.ItemResponse;
+import com.finder.domain.item.dto.response.*;
 
 import java.util.List;
 
 public interface ItemService {
-    List<ItemResponse> getLostItems();
+    List<ListItemResponse> getLostItems();
 
-    List<ItemResponse> getLatestLostItems();
+    List<ListItemResponse> getLatestLostItems();
 
-    List<ItemResponse> getPopularLostItems();
+    List<ListItemResponse> getPopularLostItems();
 
-    List<ItemResponse> getRegionLostItems(Double latitude, Double longitude);
+    List<ListItemResponse> getRegionLostItems(Double latitude, Double longitude);
 
-    List<ItemResponse> getFoundItems();
+    List<ListItemResponse> getFoundItems();
 
     ItemResponse foundItem(Long itemId);
 

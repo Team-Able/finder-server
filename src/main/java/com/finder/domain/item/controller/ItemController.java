@@ -4,6 +4,7 @@ import com.finder.domain.item.dto.request.ItemCreateRequest;
 import com.finder.domain.item.dto.response.ItemCommentResponse;
 import com.finder.domain.item.dto.response.ItemDetailResponse;
 import com.finder.domain.item.dto.response.ItemResponse;
+import com.finder.domain.item.dto.response.ListItemResponse;
 import com.finder.domain.item.service.ItemService;
 import com.finder.global.common.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,13 +25,13 @@ public class ItemController {
 
     @Operation(summary = "분실물 목록 조회")
     @GetMapping("/lost")
-    public ResponseEntity<BaseResponse<List<ItemResponse>>> getLostItems() {
+    public ResponseEntity<BaseResponse<List<ListItemResponse>>> getLostItems() {
         return BaseResponse.of(itemService.getLostItems(), 200, "분실물 목록 조회 성공");
     }
 
     @Operation(summary = "습득물 목록 조회")
     @GetMapping("/found")
-    public ResponseEntity<BaseResponse<List<ItemResponse>>> getFoundItems() {
+    public ResponseEntity<BaseResponse<List<ListItemResponse>>> getFoundItems() {
         return BaseResponse.of(itemService.getFoundItems(), 200, "습득물 목록 조회 성공");
     }
 
@@ -42,19 +43,19 @@ public class ItemController {
 
     @Operation(summary = "분실물 목록 조회 (최신순)")
     @GetMapping("/lost/latest")
-    public ResponseEntity<BaseResponse<List<ItemResponse>>> getLatestFoundItems() {
+    public ResponseEntity<BaseResponse<List<ListItemResponse>>> getLatestFoundItems() {
         return BaseResponse.of(itemService.getLatestLostItems(), 200, "습득물 목록 조회 성공");
     }
 
     @Operation(summary = "분실물 목록 조회 (인기순)")
     @GetMapping("/lost/popular")
-    public ResponseEntity<BaseResponse<List<ItemResponse>>> getPopularFoundItems() {
+    public ResponseEntity<BaseResponse<List<ListItemResponse>>> getPopularFoundItems() {
         return BaseResponse.of(itemService.getPopularLostItems(), 200, "습득물 목록 조회 성공");
     }
 
     @Operation(summary = "분실물 목록 조회 (가까운 순)")
     @GetMapping("/lost/region")
-    public ResponseEntity<BaseResponse<List<ItemResponse>>> getRegionFoundItems(@RequestParam Double latitude, @RequestParam Double longitude) {
+    public ResponseEntity<BaseResponse<List<ListItemResponse>>> getRegionFoundItems(@RequestParam Double latitude, @RequestParam Double longitude) {
         return BaseResponse.of(itemService.getRegionLostItems(latitude, longitude), 200, "습득물 목록 조회 성공");
     }
 
