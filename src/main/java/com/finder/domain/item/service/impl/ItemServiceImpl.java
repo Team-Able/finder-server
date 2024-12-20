@@ -21,23 +21,23 @@ public class ItemServiceImpl implements ItemService {
     private final SecurityHolder securityHolder;
 
     @Override
-    public List<ItemResponse> getLostItems() {
-        return itemRepository.findAllByStatus(ItemStatus.LOST).stream().map(ItemResponse::of).toList();
+    public List<ListItemResponse> getLostItems() {
+        return itemRepository.findAllByStatus(ItemStatus.LOST).stream().map(ListItemResponse::of).toList();
     }
 
     @Override
-    public List<ItemResponse> getFoundItems() {
-        return itemRepository.findAllByStatus(ItemStatus.FOUND).stream().map(ItemResponse::of).toList();
+    public List<ListItemResponse> getFoundItems() {
+        return itemRepository.findAllByStatus(ItemStatus.FOUND).stream().map(ListItemResponse::of).toList();
     }
 
     @Override
-    public List<ItemResponse> getLatestLostItems() {
-        return itemRepository.findAllByStatusOrderByCreatedAtDesc(ItemStatus.LOST).stream().map(ItemResponse::of).toList();
+    public List<ListItemResponse> getLatestLostItems() {
+        return itemRepository.findAllByStatusOrderByCreatedAtDesc(ItemStatus.LOST).stream().map(ListItemResponse::of).toList();
     }
 
     @Override
-    public List<ItemResponse> getPopularLostItems() {
-        return itemRepository.findAllByStatusOrderByViewCountDesc(ItemStatus.LOST).stream().map(ItemResponse::of).toList();
+    public List<ListItemResponse> getPopularLostItems() {
+        return itemRepository.findAllByStatusOrderByViewCountDesc(ItemStatus.LOST).stream().map(ListItemResponse::of).toList();
     }
 
     @Override
@@ -50,12 +50,12 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemResponse> getRegionLostItems(Double latitude, Double longitude) {
+    public List<ListItemResponse> getRegionLostItems(Double latitude, Double longitude) {
         List<ItemEntity> items = itemRepository.findAllByStatus(ItemStatus.LOST);
 
         items.sort(Comparator.comparingDouble(item -> calculateDistance(latitude, longitude, item.getLocation().getLatitude(), item.getLocation().getLongitude())));
 
-        return items.stream().map(ItemResponse::of).toList();
+        return items.stream().map(ListItemResponse::of).toList();
     }
 
     @Override
